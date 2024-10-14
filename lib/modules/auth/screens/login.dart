@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -32,6 +33,34 @@ class _LoginState extends State<Login> {
     }
     return null;
   }
+
+Future<void> _login() async {
+  try {
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: _emailController.text,
+      password: _passwordController.text,
+    );
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('¡Inicio de sesión exitoso!')),
+    );
+  } on FirebaseAuthException catch (e) {
+    String message = '';
+    if (e.code == 'user-not-found') {
+      message = 'No existe ningún usuario con ese correo.';
+    } else if (e.code == 'wrong-password') {
+      message = 'La contraseña es incorrecta.';
+    } else {
+      message = 'Error al iniciar sesión: ${e.message}';
+    }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message)),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Ocurrió un error inesperado: $e')),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +110,8 @@ class _LoginState extends State<Login> {
                           _isObscure = !_isObscure;
                         });
                       },
-                      icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                      icon: Icon(
+                          _isObscure ? Icons.visibility : Icons.visibility_off),
                     ),
                   ),
                 ),
@@ -92,10 +122,9 @@ class _LoginState extends State<Login> {
                   child: ElevatedButton(
                     onPressed: () {
                       if (_formKey.currentState!.validate()) {
-                        print('Datos -> ${_emailController.text} ${_passwordController.text}');
+                        _login();
                       }
                     },
-                    child: const Text('Iniciar sesión'),
                     style: OutlinedButton.styleFrom(
                       backgroundColor: Colors.deepOrange[300],
                       foregroundColor: Colors.white,
@@ -103,6 +132,7 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(16),
                       ),
                     ),
+                    child: const Text('Iniciar sesión'),
                   ),
                 ),
               ],
