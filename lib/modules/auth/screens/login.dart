@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -83,7 +84,7 @@ Future<void> _login() async {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.network(
-                  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXGBrs0h5Q-8wewBmt5EfKHgPdSWkU1s3iRA&s',
+                  'https://static.wikia.nocookie.net/zelda_gamepedia_en/images/c/cf/Nintendo_Switch_Link_Series_Icon.png/revision/latest/scale-to-width-down/250?cb=20180313004219',
                   width: 200,
                   height: 200,
                 ),
@@ -117,7 +118,7 @@ Future<void> _login() async {
                 ),
                 const Spacer(),
                 SizedBox(
-                  height: 48,
+                  height: 16,
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: () {
@@ -135,6 +136,11 @@ Future<void> _login() async {
                     child: const Text('Iniciar sesión'),
                   ),
                 ),
+                const SizedBox(height: 8,),
+                InkWell(
+                  onTap: () => Navigator.pushNamed(context, '/register'),
+                  child: const Text('Registrarse', style: TextStyle(color: Colors.red, decoration: TextDecoration.underline),),
+                )
               ],
             ),
           ),
