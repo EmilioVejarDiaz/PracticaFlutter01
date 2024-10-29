@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -41,9 +40,7 @@ Future<void> _login() async {
       email: _emailController.text,
       password: _passwordController.text,
     );
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('¡Inicio de sesión exitoso!')),
-    );
+    Navigator.pushReplacementNamed(context, '/home');
   } on FirebaseAuthException catch (e) {
     String message = '';
     if (e.code == 'user-not-found') {
