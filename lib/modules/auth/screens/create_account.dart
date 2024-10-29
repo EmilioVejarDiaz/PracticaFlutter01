@@ -32,7 +32,7 @@ class _CreateAccountState extends State<CreateAccount> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Image.network(
-                  '',
+                  'https://cdn-icons-png.flaticon.com/512/9635/9635511.png',
                   width: 200,
                   height: 200,
                 ),
@@ -55,7 +55,6 @@ class _CreateAccountState extends State<CreateAccount> {
                         },
                       ),
                       const SizedBox(height: 16),
-                      // Usando el widget TextFieldPassword para la contraseña
                       TextFieldPassword(
                         controller: _password,
                         hintText: 'Contraseña',
@@ -73,37 +72,47 @@ class _CreateAccountState extends State<CreateAccount> {
                         height: 48,
                         child: ElevatedButton(
                           onPressed: () async {
-                            try {
-                              await FirebaseAuth.instance
-                                  .signInWithEmailAndPassword(
-                                email: _email.text,
-                                password: _password.text,
-                              );
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                    content:
-                                        Text('¡Inicio de sesión exitoso!')),
-                              );
-                            } on FirebaseAuthException catch (e) {
-                              String message = '';
-                              if (e.code == 'user-not-found') {
-                                message =
-                                    'No existe ningún usuario con ese correo.';
-                              } else if (e.code == 'wrong-password') {
-                                message = 'La contraseña es incorrecta.';
+                            if (_formKey.currentState!.validate()) {
+                              if (_password.text == _confirmPassword.text) {
+                                try {
+                                  await FirebaseAuth.instance
+                                      .createUserWithEmailAndPassword(
+                                    email: _email.text,
+                                    password: _password.text,
+                                  );
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            '¡Cuenta creada exitosamente!')),
+                                  );
+                                } on FirebaseAuthException catch (e) {
+                                  String message = '';
+                                  if (e.code == 'email-already-in-use') {
+                                    message = 'Este correo ya está registrado.';
+                                  } else if (e.code == 'weak-password') {
+                                    message =
+                                        'La contraseña es demasiado débil.';
+                                  } else {
+                                    message =
+                                        'Error al crear cuenta: ${e.message}';
+                                  }
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(content: Text(message)),
+                                  );
+                                } catch (e) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                        content: Text(
+                                            'Ocurrió un error inesperado: $e')),
+                                  );
+                                }
                               } else {
-                                message =
-                                    'Error al iniciar sesión: ${e.message}';
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content:
+                                          Text('Las contraseñas no coinciden')),
+                                );
                               }
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text(message)),
-                              );
-                            } catch (e) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text(
-                                        'Ocurrió un error inesperado: $e')),
-                              );
                             }
                           },
                           child: const Text('Crear cuenta'),

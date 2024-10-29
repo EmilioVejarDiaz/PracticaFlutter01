@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_application_1/modules/hotels/entities/hotel.dart';
 import 'package:flutter_rating/flutter_rating.dart';
 
@@ -32,7 +31,7 @@ class CustomListReservaciones extends StatelessWidget {
         ),
         const Spacer(),
         StarRating(
-          rating: 5.0, // Calificación fija como ejemplo
+          rating: 5.0,
           color: Colors.brown[900],
           size: 20.0,
           starCount: 5,

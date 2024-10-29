@@ -81,7 +81,7 @@ Future<void> _login() async {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Image.network(
-                  'https://static.wikia.nocookie.net/zelda_gamepedia_en/images/c/cf/Nintendo_Switch_Link_Series_Icon.png/revision/latest/scale-to-width-down/250?cb=20180313004219',
+                  'https://cdn-icons-png.flaticon.com/512/1668/1668966.png',
                   width: 200,
                   height: 200,
                 ),
